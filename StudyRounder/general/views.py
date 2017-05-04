@@ -1,20 +1,28 @@
-from .models import SRUser
+from .models import SRUser, Question
 from django import forms
 from django.urls import reverse_lazy
 from django.views import generic
 from django.shortcuts import redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
-
-
-class IndexView(generic.TemplateView):
-    template_name = "index.html"
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 
 
 class RegisterForm(forms.ModelForm):
     class Meta:
         model = SRUser
         fields = ["username", "password"]
+
+
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = ["title", "text", "clear_user"]
+
+
+class IndexView(generic.TemplateView):
+    template_name = "index.html"
 
 
 class LoginView(generic.FormView):
@@ -46,6 +54,13 @@ class LogoutView(generic.View):
 class TopView(generic.TemplateView):
     template_name = "top.html"
 
+    def get_context_data(self, **kwargs):
+        context = super(TopView, self).get_context_data(**kwargs)
+        question_list = Question.objects.all()
+
+        context["question_list"] = question_list
+        return context
+
 
 class RegisterView(generic.FormView):
     template_name = "register.html"
@@ -67,5 +82,34 @@ class RegisterView(generic.FormView):
         return super(RegisterView, self).form_invalid(form)
 
 
-class QuestionView(generic.TemplateView):
+class QuestionView(generic.DetailView, generic.FormView):
     template_name = "question.html"
+    model = Question
+    form_class = QuestionForm
+
+    def get_queryset(self):
+        self.queryset = Question.objects.all()
+        return super(QuestionView, self).get_queryset()
+
+    def get_context_data(self, **kwargs):
+        context = super(QuestionView, self).get_context_data(**kwargs)
+        clear_flag = False
+
+        if self.request.user in list(self.get_object().clear_user.all()):
+            clear_flag = True
+
+        context["question"] = self.get_object()
+        context["clear_flag"] = clear_flag
+        return context
+
+    def post(self, *args, **kwargs):
+        add_remove_action = self.request.POST["add_remove_action"]
+
+        if add_remove_action == "1":
+            self.get_object().clear_user.add(self.request.user)
+        elif add_remove_action == "2":
+            self.get_object().clear_user.remove(self.request.user)
+        else:
+            pass
+
+        return HttpResponseRedirect("/question/%d/" % int(kwargs.get("pk")))

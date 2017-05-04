@@ -4,4 +4,42 @@
 
 <h1>Question画面</h1>
 
+<HR>
+
+<a href="{% url 'general:top' %}">トップページへ</a><br>
+
+<br><br>
+
+QuestionTitle:<br>
+{{ question.title }}<br>
+
+<br><br>
+
+QuestionText:<br>
+{{ question.text }}<br>
+
+<br><br>
+
+is_clear:<br>
+{% if clear_flag %}
+Cleared!!<br>
+<form action="{% url 'general:question' question.id %}" method="post">
+    {% csrf_token %}
+    もう一度やる =>
+    <button type="submit" name="add_remove_action" value="2">Retry</button>
+</form>
+{% else %}
+<form action="{% url 'general:question' question.id %}" method="post">
+    {% csrf_token %}
+    <button type="submit" name="add_remove_action" value="1">Clear!</button>
+</form>
+{% endif %}
+
+<br><br>
+
+ClearUser:<br>
+{% for clear_user in question.clear_user.all %}
+    <li>{{ clear_user.username }}</li>
+{% endfor %}
+
 {% endblock %}

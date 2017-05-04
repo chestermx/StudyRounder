@@ -11,7 +11,14 @@ Problem<br>
 <li>node.js</li>
 <li>python</li>
 
-<br>
+<br><br>
+Question_Title_List<br>
+
+{% for question in question_list %}
+    <li><a href="{% url 'general:question' question.id %}">{{ question.title }}</a></li>
+{% endfor %}
+
+<br><br>
 
 ClearChecker<br>
 

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import SRUser
+from .models import SRUser, Question
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -10,4 +10,13 @@ class UserAdmin(admin.ModelAdmin):
         ('is_staff', {'fields': ['is_staff']}),
     ]
 
+
+class QuestionAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ("title", {"fields": ["title"]}),
+        ("text", {"fields": ["text"]}),
+        ("clear_user", {"fields": ["clear_user"]}),
+    ]
+
 admin.site.register(SRUser, UserAdmin)
+admin.site.register(Question, QuestionAdmin)
