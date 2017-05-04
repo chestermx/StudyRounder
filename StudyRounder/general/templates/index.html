@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Index画面</h1>
+<HR>
+
+<a href="{% url 'general:register' %}">登録ページへ</a><br>
+<a href="{% url 'general:login' %}">ログインページへ</a><br>
+<a href="{% url 'general:top' %}">トップページへ</a><br>
+
+{% endblock %}

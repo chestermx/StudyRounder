@@ -6,6 +6,18 @@
     {% block extra_head %}{% endblock %}
 </head>
 <body>
+
+    {% if user and not user.is_anonymous %}
+        username: {{ user.username }}<br>
+        <a href="{% url 'general:logout' %}">Logout</a><br>
+    {% endif %}
+
+    <br>
+
+    デバッグ用
+    <a href="{% url 'general:index' %}">IndexPage</a><br>
+
+    <HR>
     {% block content %}{% endblock %}
 </body>
 </html>
