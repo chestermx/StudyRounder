@@ -1,18 +1,17 @@
 {% extends "base.html" %}
 
+{% block title %}Login{% endblock %}
+
 {% block content %}
 
-<h1>Login画面</h1>
-<HR>
-
-<a href="{% url 'general:register' %}">登録ページへ</a><br>
-
+<a href="{% url 'general:register' %}">新規登録</a><br>
 <br>
 <form action="{% url 'general:login' %}" method="post">
     {% csrf_token %}
     {% for field in form %}
         {{ field.label_tag }} {{ field }}<br>
     {% endfor %}
+    <br>
     <button type="submit">login</button>
 </form>
 

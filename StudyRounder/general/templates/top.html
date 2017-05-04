@@ -1,13 +1,16 @@
 {% extends "base.html" %}
 
+{% block title %}Question Title List{% endblock %}
+
+{% block choose_item %}
+    <li class="active"><a href="{% url 'general:top' %}">HOME</a></li>
+    <li><a href="{% url 'general:about' %}">ABOUT</a></li>
+    <li><a href="#">PROBLEMS</a></li>
+    <li><a href="#">USER: {{ user.username }}</a></li>
+    <li><a href="{% url 'general:logout' %}">LOGOUT</a></li>
+{% endblock %}
+
 {% block content %}
-
-<h1>Top画面</h1>
-<HR>
-
-Question_Title_List<br>
-
-<br>
 
 {% for question in question_list %}
     <li><a href="{% url 'general:question' question.id %}">{{ question.id }}: {{ question.title }}

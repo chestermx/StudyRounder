@@ -1,20 +1,31 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>StudyRounder</title>
-    {% block extra_head %}{% endblock %}
+    {% block extrahead %}{% endblock %}
+    <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
 </head>
 <body>
 
-    {% if user and not user.is_anonymous %}
-        username: {{ user.username }}<br>
-        <a href="{% url 'general:logout' %}">Logout</a><br>
-    {% endif %}
-
-    <br>
-
-    <HR>
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      </button>
+      <a class="navbar-brand" href="#">StudyRounder v1.0</a>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+          {% block choose_item %}{% endblock %}
+      </ul>
+    </div>
+  </div>
+</div>
+    <br><h1>{% block title %}{% endblock %}</h1><br>
     {% block content %}{% endblock %}
 </body>
 </html>

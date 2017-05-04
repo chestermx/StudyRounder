@@ -22,8 +22,8 @@ class QuestionForm(forms.ModelForm):
         fields = ["title", "text", "clear_user"]
 
 
-class IndexView(generic.TemplateView):
-    template_name = "index.html"
+class AboutView(generic.TemplateView):
+    template_name = "about.html"
 
 
 class LoginView(generic.FormView):
