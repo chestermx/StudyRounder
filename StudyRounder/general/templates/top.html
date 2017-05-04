@@ -5,23 +5,32 @@
 <h1>Top画面</h1>
 <HR>
 
-Problem<br>
-<li>javascript</li>
-<li>jquery</li>
-<li>node.js</li>
-<li>python</li>
-
-<br><br>
 Question_Title_List<br>
 
+<br>
+
 {% for question in question_list %}
-    <li><a href="{% url 'general:question' question.id %}">{{ question.title }}</a></li>
+    <li><a href="{% url 'general:question' question.id %}">{{ question.id }}: {{ question.title }}
+    ({{ question.category.name }})</a></li>
+{% endfor %}
+
+{% for category_name, question_list in zipped_category_question_list %}
+    category = {{ category_name }}<br>
+    {% for question in question_list %}
+        {{question.id}}:
+        <a href="{% url 'general:question' question.id %}">{{ question.title }}</a>
+
+        <!--クリアユーザがいる場合-->
+        {% if question.clear_user.all %}({% endif %}
+        {% for clear_user in question.clear_user.all %}
+            {{ clear_user }}
+        {% endfor %}
+        {% if question.clear_user.all %}){% endif %}
+        <br>
+    {% endfor %}
+    <br>
 {% endfor %}
 
 <br><br>
-
-ClearChecker<br>
-
-
 
 {% endblock %}

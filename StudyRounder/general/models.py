@@ -59,10 +59,21 @@ class SRUser(AbstractBaseUser, PermissionsMixin):
         super(SRUser, self).save(*args, **kwargs)
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+
 class Question(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=50)
     text = models.TextField()
+    category = models.ForeignKey(Category)
     clear_user = models.ManyToManyField(SRUser, blank=True)
 
     def __str__(self):
         return self.title
+
+
+

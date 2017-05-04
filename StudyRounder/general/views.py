@@ -1,12 +1,13 @@
 from .models import SRUser, Question
 from django import forms
 from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect
 from django.views import generic
 from django.shortcuts import redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
-from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+
+show_category_list = ["javascript", "jquery", "node.js"]
 
 
 class RegisterForm(forms.ModelForm):
@@ -56,9 +57,12 @@ class TopView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(TopView, self).get_context_data(**kwargs)
-        question_list = Question.objects.all()
+        nested_question_list = []
 
-        context["question_list"] = question_list
+        for category_name in show_category_list:
+            nested_question_list.append(list(Question.objects.filter(category__name=category_name).all()))
+
+        context["zipped_category_question_list"] = zip(show_category_list, nested_question_list)
         return context
 
 
