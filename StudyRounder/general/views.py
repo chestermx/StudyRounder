@@ -1,4 +1,4 @@
-from .models import SRUser, Question
+from .models import SRUser, Question, Category
 from django import forms
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
@@ -10,6 +10,7 @@ from django.contrib.auth import authenticate, login, logout
 show_category_list = ["javascript", "jquery", "node.js"]
 
 
+# Form
 class RegisterForm(forms.ModelForm):
     class Meta:
         model = SRUser
@@ -22,10 +23,7 @@ class QuestionForm(forms.ModelForm):
         fields = ["title", "text", "clear_user"]
 
 
-class AboutView(generic.TemplateView):
-    template_name = "about.html"
-
-
+# View
 class LoginView(generic.FormView):
     template_name = "login.html"
     form_class = AuthenticationForm
@@ -52,20 +50,6 @@ class LogoutView(generic.View):
         return redirect("general:login")
 
 
-class TopView(generic.TemplateView):
-    template_name = "top.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(TopView, self).get_context_data(**kwargs)
-        nested_question_list = []
-
-        for category_name in show_category_list:
-            nested_question_list.append(list(Question.objects.filter(category__name=category_name).all()))
-
-        context["zipped_category_question_list"] = zip(show_category_list, nested_question_list)
-        return context
-
-
 class RegisterView(generic.FormView):
     template_name = "register.html"
     form_class = RegisterForm
@@ -77,13 +61,65 @@ class RegisterView(generic.FormView):
         return super(RegisterView, self).get(request)
 
     def form_valid(self, form):
-        # user = RegisterForm(request.POST).save(commit=False)
         user = SRUser.objects.create_user(form.cleaned_data["username"], form.cleaned_data["password"])
         login(user=user, request=self.request)
         return super(RegisterView, self).form_valid(form)
 
     def form_invalid(self, form):
         return super(RegisterView, self).form_invalid(form)
+
+
+class TopView(generic.TemplateView):
+    template_name = "top.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(TopView, self).get_context_data(**kwargs)
+        nested_question_list = []
+
+        for category_name in show_category_list:
+            nested_question_list.append(list(Question.objects.filter(category__name=category_name).all()))
+
+        context["zipped_category_question_list"] = zip(show_category_list, nested_question_list)
+        context["choose_number"] = 0
+        context["question_list"] = Question.objects.all()
+        return context
+
+
+class AchievementView(generic.TemplateView):
+    template_name = "achievement.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(AchievementView, self).get_context_data(**kwargs)
+        achievement_rate_list = []
+
+        # ユーザのトータルの達成率を算出
+        question_all = Question.objects.all()
+        clear_all = Question.objects.filter(clear_user=self.request.user)
+        user_total_score = sum([x.point for x in clear_all])
+        print(user_total_score)
+
+        # ユーザのカテゴリ毎の達成率を算出
+        for category in show_category_list:
+            category_question_all = Question.objects.filter(category=Category.objects.filter(name=category))
+            category_clear_all = Question.objects.filter(category=Category.objects.filter(name=category),
+                                                         clear_user=self.request.user)
+            achievement_rate_list.append('{:.1f}'.format((len(category_clear_all) / len(category_question_all))*100))
+
+        # すべてのユーザのスコアを算出
+        all_username_total_score = []
+        for user in SRUser.objects.all():
+            all_username_total_score.append([user.username,
+                                             sum(x.point for x in Question.objects.filter(clear_user=user))])
+
+        # すべてのユーザをランキング順にソート
+        sorted_all_username_total_score = sorted(all_username_total_score, key=lambda x: x[1], reverse=True)
+
+        context["result_clear_all_rate"] = '{:.1f}'.format((len(clear_all) / len(question_all))*100)
+        context["result_category_achievementrate"] = zip(show_category_list, achievement_rate_list)
+        context["sorted_all_username_total_score"] = sorted_all_username_total_score
+        context["choose_number"] = 1
+        context["question_list"] = Question.objects.all()
+        return context
 
 
 class QuestionView(generic.DetailView, generic.FormView):
@@ -104,6 +140,8 @@ class QuestionView(generic.DetailView, generic.FormView):
 
         context["question"] = self.get_object()
         context["clear_flag"] = clear_flag
+        context["choose_number"] = 2
+        context["question_list"] = Question.objects.all()
         return context
 
     def post(self, *args, **kwargs):

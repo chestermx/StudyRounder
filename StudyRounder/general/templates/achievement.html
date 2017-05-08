@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}Your Achievement{% endblock %}
+
+{% block content %}
+
+total: {{ result_clear_all_rate }} %<br>
+
+<br>
+
+category:<br>
+{% for categoryname, achievement_rate in result_category_achievementrate %}
+{{ categoryname }}: {{ achievement_rate }}%<br>
+{% endfor %}
+
+<br><br>
+
+<h1>Ranking</h1>
+
+{% for username, total_score in sorted_all_username_total_score %}
+{{ forloop.counter }}, {{ username }}, {{ total_score }}pt<br>
+{% endfor %}
+
+{% endblock %}

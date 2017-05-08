@@ -67,9 +67,10 @@ class Category(models.Model):
 
 
 class Question(models.Model):
-    title = models.CharField(max_length=50)
-    text = models.TextField()
-    category = models.ForeignKey(Category)
+    title = models.CharField(max_length=50, null=False)
+    text = models.TextField(null=False)
+    category = models.ForeignKey(Category, null=False)
+    point = models.IntegerField(null=False)
     clear_user = models.ManyToManyField(SRUser, blank=True)
 
     def __str__(self):

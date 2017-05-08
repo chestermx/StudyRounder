@@ -2,26 +2,28 @@
 
 {% block title %}Question Title List{% endblock %}
 
-{% block choose_item %}
-    <li class="active"><a href="{% url 'general:top' %}">HOME</a></li>
-    <li><a href="{% url 'general:about' %}">ABOUT</a></li>
-    <li><a href="#">PROBLEMS</a></li>
-    <li><a href="#">USER: {{ user.username }}</a></li>
-    <li><a href="{% url 'general:logout' %}">LOGOUT</a></li>
-{% endblock %}
-
 {% block content %}
 
+numbersort<br>
+categorysort<br>
+
+<br><br>
+
 {% for question in question_list %}
-    <li><a href="{% url 'general:question' question.id %}">{{ question.id }}: {{ question.title }}
-    ({{ question.category.name }})</a></li>
+    #{{ question.id }}: <a href="{% url 'general:question' question.id %}">{{ question.title }}</a>
+    {{ question.point }}pt
+    ({{ question.category.name }})<br>
 {% endfor %}
+
+<br><br>
 
 {% for category_name, question_list in zipped_category_question_list %}
     category = {{ category_name }}<br>
     {% for question in question_list %}
-        {{question.id}}:
+        #{{question.id}}:
         <a href="{% url 'general:question' question.id %}">{{ question.title }}</a>
+
+        {{ question.point }}pt
 
         <!--クリアユーザがいる場合-->
         {% if question.clear_user.all %}({% endif %}
