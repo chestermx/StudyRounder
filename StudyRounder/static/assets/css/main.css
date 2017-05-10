@@ -14,7 +14,8 @@
 /* OVERALL ASPECT */
 
 body {
-  background-color: #f2f2f2;
+    /*background-color: #fafafa;*/
+    background-color: #f2f2f2;
     font-family: "Lato";
     font-weight: 300;
     font-size: 16px;
@@ -22,7 +23,7 @@ body {
 
     -webkit-font-smoothing: antialiased;
     -webkit-overflow-scrolling: touch;
-    
+
     margin-top: 70px;
 }
 
@@ -31,6 +32,7 @@ h1, h2, h3, h4, h5, h6 {
     font-family: "Raleway";
     font-weight: 300;
     color: #333;
+    margin-left: 30px;
 }
 
 
