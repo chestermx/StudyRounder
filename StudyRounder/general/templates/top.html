@@ -9,7 +9,6 @@
 
 {% block content %}
 
-<!--CategorySort-->
 {% for category_name, category_question_list in zipped_category_question_list %}
 <table class="zebra menu_category">
         <caption>{{category_name}}</caption>
@@ -32,7 +31,6 @@
         </tfoot>
         {% for question in category_question_list %}
             <tr>
-                <!--<td>{{ question.id }}</td>-->
                 <td>{{ forloop.counter }}</td>
                 <td><a href="{% url 'general:question' question.id %}">{{ question.title }}</a></td>
                 <td>{{ question.point }}pt</td>

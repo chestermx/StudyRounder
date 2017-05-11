@@ -57,11 +57,6 @@ class SRUser(AbstractBaseUser, PermissionsMixin):
         "Does the user have permissions to view the app `app_label`?"
         return True
 
-    # def save(self, commit=True, *args, **kwargs):
-    #     user = super(SRUser, self)
-    #     user.set_password(user.password)
-    #     super(SRUser, self).save(*args, **kwargs)
-
 
 class Category(models.Model):
     name = models.CharField(max_length=50)

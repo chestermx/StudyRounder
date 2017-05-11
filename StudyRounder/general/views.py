@@ -7,7 +7,10 @@ from django.shortcuts import redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 
+# 自分で順番を指定できるかつ, 自動更新できるようにする
 show_category_list = ["javascript", "jquery", "node.js"]
+# show_category_list = ["javascript", "jquery", "node.js", "express", "react", "other", "vue.js", "angular.js",
+#                       "material design", "electron", "php", "python", "flask"]
 
 
 # Form
@@ -101,7 +104,6 @@ class AchievementView(generic.TemplateView):
             category_question_all = Question.objects.filter(category=Category.objects.filter(name=category))
             category_clear_all = Question.objects.filter(category=Category.objects.filter(name=category),
                                                          clear_user=self.request.user)
-            print(len(category_question_all))
             if len(category_question_all) != 0:
                 achievement_rate_list.append('{:.1f}'.format((len(category_clear_all) / len(category_question_all))*100))
             else:
