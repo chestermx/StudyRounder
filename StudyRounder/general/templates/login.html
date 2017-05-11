@@ -15,4 +15,19 @@
     <button type="submit">login</button>
 </form>
 
+<ul>
+    {% if user and not user.is_anonymous %}
+        <li>
+            <a>Hello {{ user.get_full_name|default:user.username }}!</a>
+        </li>
+        <li>
+            <a href="{% url 'auth:logout' %}?next={% url 'general:index' %}">Logout</a>
+        </li>
+    {% else %}
+        <li>
+            <a href="{% url 'social:begin' 'twitter' %}?next={% url 'general:top' %}">Login with Twitter</a>
+        </li>
+    {% endif %}
+</ul>
+
 {% endblock %}
