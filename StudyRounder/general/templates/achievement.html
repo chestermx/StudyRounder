@@ -1,31 +1,54 @@
 {% extends "base.html" %}
-<!--{% load staticfiles %}-->
+{% load staticfiles %}
+
+{% block extrahead %}
+    <link href="{% static 'achievement-style.css' %}" rel="stylesheet">
+    <link href="{% static 'highlight-style.css' %}" rel="stylesheet">
+{% endblock %}
 
 {% block title %}Your Achievement{% endblock %}
 
 {% block content %}
 
-<h3>
-total: {{ result_clear_all_rate }} %<br>
-</h3>
-
-<br>
-
-<h3>category:</h3>
-<h4>
-{% for categoryname, achievement_rate in result_category_achievementrate %}
-    {{ categoryname }}: {{ achievement_rate }}%<br>
-{% endfor %}
-</h4>
+<h2 class="text-center">
+total: {{ result_clear_all_rate }} % &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</h2>
 
 <br><br>
 
-<h1>Ranking</h1>
+<div class="row">
+    {% for categoryname, achievement_rate in result_category_achievementrate %}
+        <div class="col-xs-8  col-sm-6 col-md-4"><h3>{{ categoryname }}: {{ achievement_rate }}%</h3></div>
+    {% endfor %}
+</div>
 
-<h4>
-{% for username, total_score in sorted_all_username_total_score %}
-    {{ forloop.counter }}, {{ username }}, {{ total_score }}pt<br>
-{% endfor %}
-</h4>
+<br><br>
+
+<table class="bordered">
+        <caption>Ranking</caption>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>User</th>
+            <th>point</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <td>&nbsp;</td>
+            <td></td>
+            <td></td>
+        </tr>
+        </tfoot>
+        {% for username, total_score in sorted_all_username_total_score %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td><a href="#">{{ username }}</a></td>
+                <td>{{ total_score }}pt</td>
+            </tr>
+        {% endfor %}
+</table>
+
+<br><br>
 
 {% endblock %}

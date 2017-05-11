@@ -5,13 +5,12 @@ caption{
 .zebra {
     width: 700px;
     margin: 40px auto;
-    /*font-family: 'trebuchet MS', 'Lucida sans', Arial;*/
     font-size: 14px;
     color: #444;
 }
 
 table {
-    *border-collapse: collapse; /* IE7 and lower */
+    *border-collapse: collapse;
     border-spacing: 0;
     width: 100%;
 }
@@ -22,7 +21,6 @@ table {
 }
 
 .zebra tbody tr:nth-child(even) {
-    /*background: #f5f5f5;*/
     background: #e8e8e8;
     -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
     -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;
