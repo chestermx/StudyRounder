@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block extrahead %}
+    <link href="{% static 'question-style.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}#{{ question.id }} {{ question.title}}{% endblock %}
+
+{% block content %}
+
+<div class="well">
+    <h3>{{ question.text|linebreaks }}</h3>
+</div>
+
+<br><br>
+
+{% if question.image %}
+    <img src="{{ question.image.url }}" width="300">
+<br><br>
+{% endif %}
+
+<br><br>
+
+<div class="box-clear">
+
+{% if not clear_flag %}
+
+<form action="{% url 'general:question' question.id %}" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary" name="add_remove_action" value="1">Clear!</button>
+</form>
+
+{% else %}
+
+Cleared!!<br><br>
+<form action="{% url 'general:question' question.id %}" method="post">
+    {% csrf_token %}
+    もう一度やる =>
+    <button type="submit" class="btn btn-info" name="add_remove_action" value="2">Retry</button>
+</form>
+
+{% endif %}
+
+</div>
+
+<br><br>
+
+{% endblock %}

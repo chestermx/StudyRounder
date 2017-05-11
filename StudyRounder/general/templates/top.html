@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block extrahead %}
+    <link href="{% static 'zebra-style.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Questions{% endblock %}
+
+{% block content %}
+
+{% for category_name, category_question_list in zipped_category_question_list %}
+<table class="zebra menu_category">
+        <caption>{{category_name}}</caption>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>point</th>
+            <th>category</th>
+            <th>clear_user</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <td>&nbsp;</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        </tfoot>
+        {% for question in category_question_list %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td><a href="{% url 'general:question' question.id %}">{{ question.title }}</a></td>
+                <td>{{ question.point }}pt</td>
+                <td>{{ question.category.name}}</td>
+                <td>{% for clear_user in question.clear_user.all %}
+                    {{ clear_user }}&nbsp;
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+</table>
+{% endfor %}
+
+<table class="zebra menu_number">
+    <caption>ALL</caption>
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th>point</th>
+        <th>category</th>
+        <th>clear_user</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <td>&nbsp;</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    </tfoot>
+    {% for question in question_list %}
+        <tr>
+            <td>{{ question.id }}</td>
+            <td><a href="{% url 'general:question' question.id %}">{{ question.title }}</a></td>
+            <td>{{ question.point }}pt</td>
+            <td>{{ question.category.name}}</td>
+            <td>{% for clear_user in question.clear_user.all %}
+                {{ clear_user }}&nbsp;
+                {% endfor %}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
