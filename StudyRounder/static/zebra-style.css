@@ -80,6 +80,6 @@ table {
 
 .zebra tfoot td:only-child{
     -moz-border-radius: 0 0 6px 6px;
-    -webkit-border-radius: 0 0 6px 6px
-    border-radius: 0 0 6px 6px
+    -webkit-border-radius: 0 0 6px 6px;
+    border-radius: 0 0 6px 6px;
 }

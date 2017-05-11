@@ -71,6 +71,8 @@ class Question(models.Model):
     text = models.TextField(null=False)
     category = models.ForeignKey(Category, null=False)
     point = models.IntegerField(null=False)
+
+    image = models.ImageField(upload_to="images/", blank=True)
     clear_user = models.ManyToManyField(SRUser, blank=True)
 
     def __str__(self):

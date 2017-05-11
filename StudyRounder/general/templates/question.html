@@ -1,10 +1,23 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block title %}#{{ question.id }} {{ question.title}}{% endblock %}
 
 {% block content %}
 
 <h3>{{ question.text }}</h3>
+
+<br><br>
+
+{% if question.image %}
+    <img src="{{ question.image.url }}" width="300">
+<br><br>
+{% endif %}
+
+<br>
+
+reference:<br>
+
 
 <br><br>
 

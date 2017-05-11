@@ -17,6 +17,7 @@ class QuestionAdmin(admin.ModelAdmin):
         ("text", {"fields": ["text"]}),
         ("category", {"fields": ["category"]}),
         ("point", {"fields": ["point"]}),
+        ("image", {"fields": ["image"]}),
         ("clear_user", {"fields": ["clear_user"]}),
     ]
 

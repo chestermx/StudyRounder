@@ -95,15 +95,17 @@ class AchievementView(generic.TemplateView):
         # ユーザのトータルの達成率を算出
         question_all = Question.objects.all()
         clear_all = Question.objects.filter(clear_user=self.request.user)
-        user_total_score = sum([x.point for x in clear_all])
-        print(user_total_score)
 
         # ユーザのカテゴリ毎の達成率を算出
         for category in show_category_list:
             category_question_all = Question.objects.filter(category=Category.objects.filter(name=category))
             category_clear_all = Question.objects.filter(category=Category.objects.filter(name=category),
                                                          clear_user=self.request.user)
-            achievement_rate_list.append('{:.1f}'.format((len(category_clear_all) / len(category_question_all))*100))
+            print(len(category_question_all))
+            if len(category_question_all) != 0:
+                achievement_rate_list.append('{:.1f}'.format((len(category_clear_all) / len(category_question_all))*100))
+            else:
+                achievement_rate_list.append('{:.1f}'.format(0))
 
         # すべてのユーザのスコアを算出
         all_username_total_score = []
