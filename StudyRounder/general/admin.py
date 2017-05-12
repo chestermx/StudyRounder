@@ -15,6 +15,7 @@ class QuestionAdmin(admin.ModelAdmin):
     fieldsets = [
         ("title", {"fields": ["title"]}),
         ("text", {"fields": ["text"]}),
+        ("hint", {"fields": ["hint"]}),
         ("category", {"fields": ["category"]}),
         ("point", {"fields": ["point"]}),
         ("image", {"fields": ["image"]}),
