@@ -65,7 +65,7 @@
     </tfoot>
     {% for question in question_list %}
         <tr>
-            <td>{{ question.id }}</td>
+            <td>{{ forloop.counter }}</td>
             <td><a href="{% url 'general:question' question.id %}">{{ question.title }}</a></td>
             <td>{{ question.point }}pt</td>
             <td>{{ question.category.name}}</td>

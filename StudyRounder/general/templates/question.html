@@ -1,19 +1,32 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load markdown_deux_tags %}
 
 {% block extrahead %}
     <link href="{% static 'question-style.css' %}" rel="stylesheet">
 {% endblock %}
 
-{% block title %}#{{ question.id }} {{ question.title}}{% endblock %}
-
 {% block content %}
 
+<h2>{{ question.title }}</h2>
+<HR style="margin: 0px 25px;">
+<br>
+
 <div class="well">
-    <h3>{{ question.text|linebreaks }}</h3>
+    <h4>{{ question.text|markdown }}</h4>
+
+    <br>
+
+    <button class="btn btn-default open_hint">Hint</button>
+    <div class="box-hint" style="display: none;">
+        <div class="well" style="margin-top: 10px;">
+            {{ question.hint|linebreaks }}
+        </div>
+    </div>
 </div>
 
 <br><br>
+
 
 {% if question.image %}
     <img src="{{ question.image.url }}" width="300">
@@ -45,5 +58,13 @@ Cleared!!<br><br>
 </div>
 
 <br><br>
+
+<script type="text/javascript">
+    $(function () {
+        $(".open_hint").click(function(){
+            $(".box-hint").show()
+        });
+    });
+</script>
 
 {% endblock %}

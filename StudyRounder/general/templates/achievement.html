@@ -33,13 +33,7 @@ total: {{ result_clear_all_rate }} % &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <th>point</th>
         </tr>
         </thead>
-        <tfoot>
-        <tr>
-            <td>&nbsp;</td>
-            <td></td>
-            <td></td>
-        </tr>
-        </tfoot>
+
         {% for username, total_score in sorted_all_username_total_score %}
             <tr>
                 <td>{{ forloop.counter }}</td>

@@ -38,7 +38,7 @@
                     <ul class="dropdown-menu" role="menu">
                         {% for question in question_list %}
                             <li role="presentation"><a href="{% url 'general:question' question.id %}">
-                                #{{question.id}} {{ question.title }}
+                                #{{ forloop.counter }} {{ question.title }}
                             </a></li>
                         {% endfor %}
                     </ul>
@@ -68,7 +68,7 @@
     </div>
 </div>
 <br>
-<h1>{% block title %}{% endblock %}</h1><br>
+<h1>{% block title %}{% endblock %}</h1>
 {% block content %}{% endblock %}
 
 

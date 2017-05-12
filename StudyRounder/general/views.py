@@ -53,23 +53,23 @@ class LogoutView(generic.View):
         return redirect("general:login")
 
 
-class RegisterView(generic.FormView):
-    template_name = "register.html"
-    form_class = RegisterForm
-    success_url = reverse_lazy("general:top")
-
-    def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated():
-            return redirect("general:top")
-        return super(RegisterView, self).get(request)
-
-    def form_valid(self, form):
-        user = SRUser.objects.create_user(form.cleaned_data["username"], form.cleaned_data["password"])
-        login(user=user, request=self.request)
-        return super(RegisterView, self).form_valid(form)
-
-    def form_invalid(self, form):
-        return super(RegisterView, self).form_invalid(form)
+# class RegisterView(generic.FormView):
+#     template_name = "register.html"
+#     form_class = RegisterForm
+#     success_url = reverse_lazy("general:top")
+#
+#     def get(self, request, *args, **kwargs):
+#         if request.user.is_authenticated():
+#             return redirect("general:top")
+#         return super(RegisterView, self).get(request)
+#
+#     def form_valid(self, form):
+#         user = SRUser.objects.create_user(form.cleaned_data["username"], form.cleaned_data["password"])
+#         login(user=user, request=self.request)
+#         return super(RegisterView, self).form_valid(form)
+#
+#     def form_invalid(self, form):
+#         return super(RegisterView, self).form_invalid(form)
 
 
 class TopView(generic.TemplateView):
@@ -112,11 +112,14 @@ class AchievementView(generic.TemplateView):
         # すべてのユーザのスコアを算出
         all_username_total_score = []
         for user in SRUser.objects.all():
-            all_username_total_score.append([user.username,
-                                             sum(x.point for x in Question.objects.filter(clear_user=user))])
+            if not user.is_superuser:
+                all_username_total_score.append([user.username,
+                                                 sum(x.point for x in Question.objects.filter(clear_user=user))])
 
         # すべてのユーザをランキング順にソート
         sorted_all_username_total_score = sorted(all_username_total_score, key=lambda x: x[1], reverse=True)
+
+        print()
 
         context["result_clear_all_rate"] = '{:.1f}'.format((len(clear_all) / len(question_all))*100)
         context["result_category_achievementrate"] = zip(show_category_list, achievement_rate_list)
@@ -152,7 +155,8 @@ class QuestionView(generic.DetailView, generic.FormView):
         add_remove_action = self.request.POST["add_remove_action"]
 
         if add_remove_action == "1":
-            self.get_object().clear_user.add(self.request.user)
+            if not self.request.user.is_superuser:
+                self.get_object().clear_user.add(self.request.user)
         elif add_remove_action == "2":
             self.get_object().clear_user.remove(self.request.user)
         else:
