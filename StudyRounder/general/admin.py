@@ -16,6 +16,8 @@ class QuestionAdmin(admin.ModelAdmin):
         ("title", {"fields": ["title"]}),
         ("text", {"fields": ["text"]}),
         ("hint", {"fields": ["hint"]}),
+        ("sample_text", {"fields": ["sample_text"]}),
+        ("sample_script", {"fields": ["sample_script"]}),
         ("category", {"fields": ["category"]}),
         ("point", {"fields": ["point"]}),
         ("image", {"fields": ["image"]}),

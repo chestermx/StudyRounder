@@ -17,12 +17,25 @@
 
     <br>
 
+    {% if question.hint %}
     <button class="btn btn-default open_hint">Hint</button>
     <div class="box-hint" style="display: none;">
         <div class="well" style="margin-top: 10px;">
-            {{ question.hint|linebreaks }}
+            {{ question.hint|markdown }}
         </div>
     </div>
+    {% endif %}
+
+    <br>
+
+    {% if question.sample_text %}
+    <button class="btn btn-default open_sample">Sample</button>
+    <div class="box-sample" style="display: none;">
+        <div class="well" style="margin-top: 10px;">
+            <div id="sample-text"></div>
+        </div>
+    </div>
+    {% endif %}
 </div>
 
 <br><br>
@@ -61,10 +74,15 @@ Cleared!!<br><br>
 
 <script type="text/javascript">
     $(function () {
+
         $(".open_hint").click(function(){
-            $(".box-hint").show()
+            $(".box-hint").show();
+        });
+        $(".open_sample").click(function(){
+            $(".box-sample").show();
         });
     });
+
 </script>
 
 {% endblock %}
