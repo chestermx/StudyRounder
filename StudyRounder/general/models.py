@@ -68,6 +68,7 @@ class Category(models.Model):
 class Question(models.Model):
     title = models.CharField(max_length=50, null=False)
     text = models.TextField(null=False)
+    hint = models.TextField(blank=True)
     category = models.ForeignKey(Category, null=False)
     point = models.IntegerField(null=False)
 
