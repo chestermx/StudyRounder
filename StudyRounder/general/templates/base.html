@@ -1,0 +1,83 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>StudyRounder</title>
+    {% block extrahead %}{% endblock %}
+    <link href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
+    <script type="text/javascript" src="{% static 'jquery-3.2.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+</head>
+<body>
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+
+        <!--header-->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'general:top' %}">StudyRounder v1.0</a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+
+            {% if not user.is_anonymous %}
+                <li class="choose_item"><a href="{% url 'general:top' %}">HOME</a></li>
+                <li class="choose_item"><a href="{% url 'general:achievement' %}">ACHIEVEMENT</a></li>
+                <li class="dropdown choose_item">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">PROBLEMS
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        {% for question in question_list %}
+                            <li role="presentation"><a href="{% url 'general:question' question.id %}">
+                                #{{ forloop.counter }} {{ question.title }}
+                            </a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li class="dropdown choose_item">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">USER: {{ user.username }}
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="presentation"><a href="{% url 'general:logout' %}">Logout</a></li>
+                    </ul>
+                </li>
+            {% else %}
+                <li class="dropdown choose_item">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">LOGIN
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="presentation">
+                        <a href="{% url 'social:begin' 'twitter' %}?next={% url 'general:top' %}">with Twitter</a>
+                        </li>
+                    </ul>
+                </li>
+            {% endif %}
+
+            </ul>
+        </div>
+
+    </div>
+</div>
+<br>
+<h1>{% block title %}{% endblock %}</h1>
+{% block content %}{% endblock %}
+
+
+<script type="text/javascript">
+    $(function () {
+        var choose_number = {{ choose_number }};
+        $(".choose_item").eq(choose_number).attr("class", "active");
+    });
+</script>
+
+</body>
+</html>

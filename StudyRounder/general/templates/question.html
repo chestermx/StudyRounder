@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load markdown_deux_tags %}
+
+{% block extrahead %}
+    <link href="{% static 'question-style.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<h2>{{ question.title }}</h2>
+<HR style="margin: 0px 25px;">
+<br>
+
+<div class="well">
+    <h4>{{ question.text|markdown }}</h4>
+
+    <br>
+
+    {% if question.hint %}
+    <button class="btn btn-default open_hint">Hint</button>
+    <div class="box-hint" style="display: none;">
+        <div class="well" style="margin-top: 10px;">
+            {{ question.hint|markdown }}
+        </div>
+    </div>
+    {% endif %}
+
+    <br>
+
+    {% if question.sample_text %}
+    <button class="btn btn-default open_sample">Sample</button>
+    <div class="box-sample" style="display: none;">
+        <div class="well" style="margin-top: 10px;">
+            <div id="sample-text"></div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<br><br>
+
+
+{% if question.image %}
+    <img src="{{ question.image.url }}" width="300">
+<br><br>
+{% endif %}
+
+<br><br>
+
+<div class="box-clear">
+
+{% if not clear_flag %}
+
+<form action="{% url 'general:question' question.id %}" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary" name="add_remove_action" value="1">Clear!</button>
+</form>
+
+{% else %}
+
+Cleared!!<br><br>
+<form action="{% url 'general:question' question.id %}" method="post">
+    {% csrf_token %}
+    もう一度やる =>
+    <button type="submit" class="btn btn-info" name="add_remove_action" value="2">Retry</button>
+</form>
+
+{% endif %}
+
+</div>
+
+<br><br>
+
+<script type="text/javascript">
+    $(function () {
+
+        $(".open_hint").click(function(){
+            $(".box-hint").show();
+        });
+        $(".open_sample").click(function(){
+            $(".box-sample").show();
+        });
+    });
+
+</script>
+
+{% endblock %}
