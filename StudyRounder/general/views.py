@@ -8,7 +8,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 
 # 自分で順番を指定できるかつ, 自動更新できるようにする
-show_category_list = ["javascript", "jquery", "node.js"]
+show_category_list = ["javascript", "jquery", "node.js", "other"]
 # show_category_list = ["javascript", "jquery", "node.js", "express", "react", "other", "vue.js", "angular.js",
 #                       "material design", "electron", "php", "python", "flask"]
 

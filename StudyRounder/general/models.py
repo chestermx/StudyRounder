@@ -30,7 +30,7 @@ class AuthUserManager(BaseUserManager):
 
 class SRUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField("username", unique=True, max_length=30)
-    email = models.EmailField("email", unique=True)
+    email = models.EmailField("email", unique=False)
 
     date_joined = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True, null=False)
